@@ -25,6 +25,7 @@ namespace ElectronNET.CLI.Commands
         private string _aspCoreProjectPath = "project-path";
         private string _arguments = "args";
         private string _manifest = "manifest";
+        private string _paramPackageJson = "package-json";      //Added by Sachin Patel
 
         public Task<bool> ExecuteAsync()
         {
@@ -69,6 +70,14 @@ namespace ElectronNET.CLI.Commands
 
                 DeployEmbeddedElectronFiles.Do(tempPath);
 
+                //Added by Sachin Patel
+                if (parser.Arguments.ContainsKey(_paramPackageJson))
+                {
+                    Console.WriteLine("Copying custom package.json.");
+
+                    File.Copy(parser.Arguments[_paramPackageJson][0], Path.Combine(tempPath, "package.json"), true);
+                }
+                
                 var nodeModulesDirPath = Path.Combine(tempPath, "node_modules");
 
                 Console.WriteLine("node_modules missing in: " + nodeModulesDirPath);
